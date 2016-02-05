@@ -13,10 +13,13 @@ group :development do
   gem "guard-yard"
   gem "inch"
   gem "mutant-rspec"
-  gem "pry"
   gem "rake"
   gem "rubocop", "0.37.0"
   gem "yard", "~> 0.8"
+end
+
+group :development, :test do
+  gem "pry"
 end
 
 group :test do
