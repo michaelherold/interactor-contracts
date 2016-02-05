@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+gem "dry-validation", :github => "dryrb/dry-validation", :branch => "master"
+
 gemspec
 
 group :development do
