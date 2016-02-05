@@ -1,4 +1,26 @@
+cache: bundler
 language: ruby
 rvm:
-  - 2.2.3
+  - 2.0
+  - 2.1
+  - 2.2
+  - 2.3
+  - jruby-19mode
+  - jruby-9.0.0.0
+  - jruby-head
+  - ruby-head
+script: bundle exec rspec
+sudo: false
+
 before_install: gem install bundler -v 1.11.2
+bundler_args: --without development
+
+matrix:
+  allowed_failures:
+    - rvm: jruby-head
+    - rvm: ruby-head
+  fast_finish: true
+
+addons:
+  code_climate:
+    repo_token: 4c8d32857f6271a921d0db0bdf9a316c47b5cc89827c85da862ab2738842dbb1
