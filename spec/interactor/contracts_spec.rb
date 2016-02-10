@@ -1,6 +1,14 @@
 require "spec_helper"
 
 RSpec.describe Interactor::Contracts do
+  it "raises a NotAnInteractor exception when included in a non-Interactor" do
+    expect do
+      Class.new do
+        include Interactor::Contracts
+      end
+    end.to raise_error(Interactor::Contracts::NotAnInteractor)
+  end
+
   describe ".assures" do
     it "creates and uses a schema to validate outputs" do
       interactor = Class.new do

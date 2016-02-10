@@ -1,12 +1,19 @@
 require "dry-validation"
 require "interactor"
+require "interactor/contracts/errors"
 
 module Interactor
   # Create a contract for your interactor that specifies what it expects as
   # inputs.
   module Contracts
+    # Called when the module is included into another class or module.
+    #
+    # @private
+    # @param [Class, Module] descendant the including class or module
     def self.included(descendant)
-      super
+      unless descendant.ancestors.include?(Interactor)
+        fail NotAnInteractor, "#{descendant} does not include `Interactor'"
+      end
       descendant.extend(ClassMethods)
     end
 
