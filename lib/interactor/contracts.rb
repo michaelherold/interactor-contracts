@@ -1,7 +1,6 @@
 require "dry-validation"
 require "interactor"
 
-# :nodoc:
 module Interactor
   # Create a contract for your interactor that specifies what it expects as
   # inputs.
