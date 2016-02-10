@@ -8,8 +8,11 @@
 [inch]: http://inch-ci.org/github/michaelherold/interactor-contracts
 [travis]: https://travis-ci.org/michaelherold/interactor-contracts
 
-Interactor::Contracts give you the ability to specify the inputs and outputs of
-your interactors.
+Interactor::Contracts is an extension to the [interactor] gem that gives you
+the ability to specify the expectations (expected inputs) and assurances
+(expected outputs) of your interactors.
+
+[interactor]: https://github.com/collectiveidea/interactor
 
 ## Installation
 
@@ -29,7 +32,52 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Let's extend the sample `AuthenticateUser` from the Interactor examples with a
+contract that specifies its expectations and assurances.
+
+```ruby
+class AuthenticateUser
+  include Interactor
+  include Interactor::Contracts
+
+  expects do
+    attr(:email)    { |email| email.filled? }
+    attr(:password) { |password| password.filled? }
+  end
+
+  assures do
+    attr(:user)  { |user| user.filled? }
+    attr(:token) { |token| token.filled? }
+  end
+
+  def call
+    if user = User.authenticate(context.email, context.password)
+      context.user = user
+      context.token = user.secret_token
+    else
+      context.fail!(:message => "authenticate_user.failure")
+    end
+  end
+end
+```
+
+The `expects` block defines the expectations: the expected attributes of the
+context prior to the interactor running, along with any predicates that further
+constrain the input.
+
+The `assures` block defines the assurances: the expected attributes of the
+context after the interactor runs and successfully completes, along with any
+predicates the further constrain the output.
+
+Because interactors can have transitive dependencies through the use of
+organizers, any other inputs or outputs are ignored from the perspective of
+the contract and are passed along to the outgoing (successful) context.
+
+Both `expects` and `assures` wrap [dry-validation], so you can use any
+predicates defined in it to describe the expected inputs and outputs of your
+interactor.
+
+[dry-validation]: https://github.com/dryrb/dry-validation
 
 ## Development
 
