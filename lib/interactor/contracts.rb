@@ -48,7 +48,7 @@ module Interactor
         @assurances ||= Class.new(Dry::Validation::Schema)
         @assurances.instance_exec(&block)
 
-        define_after_hook
+        define_assurances_hook
       end
 
       # Defines the expectations of an Interactor and creates a before hook to
@@ -78,17 +78,33 @@ module Interactor
         @expectations ||= Class.new(Dry::Validation::Schema)
         @expectations.instance_exec(&block)
 
-        define_before_hook
+        define_expectations_hook
       end
 
       private
+
+      # Flags whether the assurances hook has been defined.
+      #
+      # @!attribute [r] defined_assurances_hook
+      #   @return [TrueClass, FalseClass] true if the hook is defined
+      attr_reader :defined_assurances_hook
+      alias_method :defined_assurances_hook?, :defined_assurances_hook
+
+      # Flags whether the expectations hook has been defined.
+      #
+      # @!attribute [r] defined_assurances_hook
+      #   @return [TrueClass, FalseClass] true if the hook is defined
+      attr_reader :defined_expectations_hook
+      alias_method :defined_expectations_hook?, :defined_expectations_hook
 
       # Defines an after hook that validates the Interactor's output against
       # its contract.
       #
       # @raise [Interactor::Failure] if the input fails to meet its contract.
       # @return [void]
-      def define_after_hook
+      def define_assurances_hook
+        return if defined_assurances_hook?
+
         after do
           assurances = self.class.assurances.new
           result = assurances.call(context)
@@ -97,6 +113,8 @@ module Interactor
             context.fail!
           end
         end
+
+        @defined_assurances_hook = true
       end
 
       # Defines a before hook that validates the Interactor's input against its
@@ -104,7 +122,9 @@ module Interactor
       #
       # @raise [Interactor::Failure] if the input fails to meet its contract.
       # @return [void]
-      def define_before_hook
+      def define_expectations_hook
+        return if defined_expectations_hook?
+
         before do
           expectations = self.class.expectations.new
           result = expectations.call(context)
@@ -113,6 +133,8 @@ module Interactor
             context.fail!
           end
         end
+
+        @defined_expectations_hook = true
       end
     end
   end
