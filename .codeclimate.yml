@@ -5,6 +5,8 @@ engines:
     config:
       languages:
         - ruby
+  reek:
+    enabled: true
   rubocop:
     enabled: true
 ratings:
