@@ -1,6 +1,7 @@
 require "dry-validation"
 require "interactor"
 require "interactor/contracts/errors"
+require "interactor/contracts/violation"
 
 module Interactor
   # Create a contract for your interactor that specifies what it expects as
@@ -57,6 +58,13 @@ module Interactor
         define_assurances_hook
       end
 
+      # The default violation handler that fails the context.
+      #
+      # @return [Proc] the default violation handler
+      def default_violation_handler
+        ->(_violations) { context.fail! }
+      end
+
       # Defines the expectations of an Interactor and creates a before hook to
       # validate the input when called.
       #
@@ -85,6 +93,48 @@ module Interactor
         @expectations.instance_exec(&block)
 
         define_expectations_hook
+      end
+
+      # Defines a violation handler that is called when a contract is violated.
+      #
+      # @example
+      #
+      #   class CreatePerson
+      #     include Interactor
+      #     include Interactor::Contracts
+      #
+      #     expects do
+      #       attr(:name, &:filled?)
+      #     end
+      #
+      #     on_violation do |violations|
+      #       context.fail!(:message => "invalid_#{violations.first.property}")
+      #     end
+      #
+      #     def call
+      #       context.person = Person.create!(:name => context.name)
+      #     end
+      #   end
+      #
+      #   CreatePerson.call(:first_name => "Billy").message  #=> "invalid_name"
+      #
+      # @param [Block] block the validation handler as a block of arity 1.
+      # @return [void]
+      def on_violation(&block)
+        defined_violation_handlers << block
+      end
+
+      # The violation handlers for the contract. When no custom violation
+      # handlers have been defined, it defaults to an array containing the
+      # default violation handler.
+      #
+      # @return [Array<Proc>] the violation handlers for the contract
+      def violation_handlers
+        if defined_violation_handlers.empty?
+          Array(default_violation_handler)
+        else
+          defined_violation_handlers
+        end
       end
 
       private
@@ -116,7 +166,12 @@ module Interactor
           result = assurances.call(context)
 
           unless result.success?
-            context.fail!
+            violations = result.messages.map do |property, messages|
+              Violation.new(property, messages)
+            end
+            self.class.violation_handlers.each do |handler|
+              instance_exec(violations, &handler)
+            end
           end
         end
 
@@ -136,11 +191,23 @@ module Interactor
           result = expectations.call(context)
 
           unless result.success?
-            context.fail!
+            violations = result.messages.map do |property, messages|
+              Violation.new(property, messages)
+            end
+            self.class.violation_handlers.each do |handler|
+              instance_exec(violations, &handler)
+            end
           end
         end
 
         @defined_expectations_hook = true
+      end
+
+      # The custom violation handlers defined for the contract.
+      #
+      # @return [Array<Proc>] the custom validation handlers for the contract
+      def defined_violation_handlers
+        @defined_violation_handlers ||= []
       end
     end
   end
