@@ -15,7 +15,7 @@ before_install: gem install bundler -v 1.11.2
 bundler_args: --without development
 
 matrix:
-  allowed_failures:
+  allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
   fast_finish: true
