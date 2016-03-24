@@ -16,7 +16,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor::Contracts
 
         assures do
-          attr(:name, &:filled?)
+          attr(:name).required
         end
 
         def call
@@ -36,11 +36,11 @@ RSpec.describe Interactor::Contracts do
         include Interactor::Contracts
 
         assures do
-          attr(:first_name, &:filled?)
+          attr(:first_name).required
         end
 
         assures do
-          attr(:last_name, &:filled?)
+          attr(:last_name).required
         end
 
         def call
@@ -61,11 +61,11 @@ RSpec.describe Interactor::Contracts do
         include Interactor::Contracts
 
         assures do
-          attr(:first_name, &:filled?)
+          attr(:first_name).required
         end
 
         assures do
-          attr(:last_name, &:filled?)
+          attr(:last_name).required
         end
 
         def call
@@ -87,7 +87,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor::Contracts
 
         expects do
-          attr(:name, &:filled?)
+          attr(:name).required
         end
       end
 
@@ -101,11 +101,11 @@ RSpec.describe Interactor::Contracts do
         include Interactor::Contracts
 
         expects do
-          attr(:first_name, &:filled?)
+          attr(:first_name).required
         end
 
         expects do
-          attr(:last_name, &:filled?)
+          attr(:last_name).required
         end
       end
 
@@ -124,11 +124,11 @@ RSpec.describe Interactor::Contracts do
         include Interactor::Contracts
 
         expects do
-          attr(:first_name, &:filled?)
+          attr(:first_name).required
         end
 
         expects do
-          attr(:last_name, &:filled?)
+          attr(:last_name).required
         end
       end
 
@@ -142,7 +142,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor
         include Interactor::Contracts
 
-        expects { attr(:name, &:filled?) }
+        expects { attr(:name).required }
 
         on_violation { |_| context[:message] = "Bilbo Baggins!" }
       end
@@ -158,7 +158,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor
         include Interactor::Contracts
 
-        assures { attr(:name, &:filled?) }
+        assures { attr(:name).required }
 
         on_violation { |_| context[:message] = "Bilbo Baggins!" }
       end
@@ -174,7 +174,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor
         include Interactor::Contracts
 
-        expects { attr(:name, &:filled?) }
+        expects { attr(:name).required }
 
         on_violation { |_| context[:silly] = "You did something silly." }
         on_violation { |_| context.fail!(:message => "Bilbo Baggins!") }
@@ -192,7 +192,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor
         include Interactor::Contracts
 
-        expects { attr(:name, &:filled?) }
+        expects { attr(:name).required }
 
         on_violation { |_| context.fail!(:message => "Bilbo Baggins!") }
         on_violation { |_| context[:wont_be_set] = "Nope" }

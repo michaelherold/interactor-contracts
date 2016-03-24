@@ -20,17 +20,12 @@ module Interactor
 
     # Defines the class-level DSL that enables Interactor contracts.
     module ClassMethods
-      # The expectations for arguments passed into the Interactor.
-      #
-      # @!attribute [r] expectations
-      #   @return [Dry::Validations::Schema] the expectations schema
-      attr_reader :expectations
-
       # The assurances the Interactor will fulfill.
       #
-      # @!attribute [r] assurances
-      #   @return [Dry::Validations::Schema] the assurances schema
-      attr_reader :assurances
+      # @return [Dry::Validations::Schema] the assurances schema
+      def assurances
+        @assurances ||= Class.new(Dry::Validation::Schema)
+      end
 
       # Defines the assurances of an Interactor and creates an after hook to
       # validate the output when called.
@@ -52,9 +47,7 @@ module Interactor
       # @param [Block] block the block defining the assurances
       # @return [void]
       def assures(&block)
-        @assurances ||= Class.new(Dry::Validation::Schema)
-        @assurances.instance_exec(&block)
-
+        self.assurances = extend_schema(assurances, &block)
         define_assurances_hook
       end
 
@@ -89,10 +82,15 @@ module Interactor
       # @param [Block] block the block defining the expectations
       # @return [void]
       def expects(&block)
-        @expectations ||= Class.new(Dry::Validation::Schema)
-        @expectations.instance_exec(&block)
-
+        self.expectations = extend_schema(expectations, &block)
         define_expectations_hook
+      end
+
+      # The expectations for arguments passed into the Interactor.
+      #
+      # @return [Dry::Validations::Schema] the expectations schema
+      def expectations
+        @expectations ||= Class.new(Dry::Validation::Schema)
       end
 
       # Defines a violation handler that is called when a contract is violated.
@@ -138,6 +136,9 @@ module Interactor
       end
 
       private
+
+      attr_writer :assurances
+      attr_writer :expectations
 
       # Flags whether the assurances hook has been defined.
       #
@@ -208,6 +209,10 @@ module Interactor
       # @return [Array<Proc>] the custom validation handlers for the contract
       def defined_violation_handlers
         @defined_violation_handlers ||= []
+      end
+
+      def extend_schema(schema = Dry::Validation::Schema, &block)
+        Dry::Validation.Schema(schema, {:build => false}, &block)
       end
     end
   end
