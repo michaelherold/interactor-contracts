@@ -11,7 +11,7 @@ group :development do
   gem "guard-yard"
   gem "inch"
   gem "mutant-rspec"
-  gem "rake"
+  gem "rake", "< 11"
   gem "rubocop", "0.37.0"
   gem "yard", "~> 0.8"
 end
