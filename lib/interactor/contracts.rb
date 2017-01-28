@@ -18,6 +18,27 @@ module Interactor
       descendant.extend(ClassMethods)
     end
 
+    private
+
+    # Checks for a breach of contracts against the context's data and applies
+    # the consequences if there is a breach.
+    #
+    # @private
+    # @param [#call] contracts a callable object
+    # @return [void]
+    def enforce_contracts(contracts)
+      result = contracts.call(context.to_h)
+
+      unless result.success?
+        violations = result.messages.map do |property, messages|
+          Violation.new(property, messages)
+        end
+        self.class.violation_handlers.each do |handler|
+          instance_exec(violations, &handler)
+        end
+      end
+    end
+
     # Defines the class-level DSL that enables Interactor contracts.
     module ClassMethods
       # The assurances the Interactor will fulfill.
@@ -162,19 +183,7 @@ module Interactor
       def define_assurances_hook
         return if defined_assurances_hook?
 
-        after do
-          assurances = self.class.assurances.new
-          result = assurances.call(context.to_h)
-
-          unless result.success?
-            violations = result.messages.map do |property, messages|
-              Violation.new(property, messages)
-            end
-            self.class.violation_handlers.each do |handler|
-              instance_exec(violations, &handler)
-            end
-          end
-        end
+        after { enforce_contracts(self.class.assurances.new) }
 
         @defined_assurances_hook = true
       end
@@ -187,19 +196,7 @@ module Interactor
       def define_expectations_hook
         return if defined_expectations_hook?
 
-        before do
-          expectations = self.class.expectations.new
-          result = expectations.call(context.to_h)
-
-          unless result.success?
-            violations = result.messages.map do |property, messages|
-              Violation.new(property, messages)
-            end
-            self.class.violation_handlers.each do |handler|
-              instance_exec(violations, &handler)
-            end
-          end
-        end
+        before { enforce_contracts(self.class.expectations.new) }
 
         @defined_expectations_hook = true
       end
