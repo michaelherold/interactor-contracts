@@ -33,7 +33,7 @@ module Interactor
         violations = result.messages.map do |property, messages|
           Violation.new(property, messages)
         end
-        self.class.violation_handlers.each do |handler|
+        self.class.consequences.each do |handler|
           instance_exec(violations, &handler)
         end
       end
@@ -72,10 +72,22 @@ module Interactor
         define_assurances_hook
       end
 
-      # The default violation handler that fails the context.
+      # The consequences for the contract. When no consequences have been
+      # defined, it defaults to an array containing the default consequence.
       #
-      # @return [Proc] the default violation handler
-      def default_violation_handler
+      # @return [Array<#call>] the consequences for the contract
+      def consequences
+        if defined_consequences.empty?
+          Array(default_consequence)
+        else
+          defined_consequences
+        end
+      end
+
+      # The default consequence that fails the context.
+      #
+      # @return [#call] the default consequence
+      def default_consequence
         ->(_violations) { context.fail! }
       end
 
@@ -140,20 +152,7 @@ module Interactor
       # @param [Block] block the validation handler as a block of arity 1.
       # @return [void]
       def on_violation(&block)
-        defined_violation_handlers << block
-      end
-
-      # The violation handlers for the contract. When no custom violation
-      # handlers have been defined, it defaults to an array containing the
-      # default violation handler.
-      #
-      # @return [Array<Proc>] the violation handlers for the contract
-      def violation_handlers
-        if defined_violation_handlers.empty?
-          Array(default_violation_handler)
-        else
-          defined_violation_handlers
-        end
+        defined_consequences << block
       end
 
       private
@@ -201,11 +200,11 @@ module Interactor
         @defined_expectations_hook = true
       end
 
-      # The custom violation handlers defined for the contract.
+      # The consequences defined for the contract.
       #
-      # @return [Array<Proc>] the custom validation handlers for the contract
-      def defined_violation_handlers
-        @defined_violation_handlers ||= []
+      # @return [Array<#call>] the consequences for the contract
+      def defined_consequences
+        @defined_consequences ||= []
       end
 
       def extend_schema(schema = Dry::Validation::Schema, &block)
