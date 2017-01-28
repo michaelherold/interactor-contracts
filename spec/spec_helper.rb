@@ -1,6 +1,3 @@
-require 'simplecov'
-SimpleCov.start
-
 if ENV["COVERAGE"] || ENV["CI"]
   require "simplecov"
 
