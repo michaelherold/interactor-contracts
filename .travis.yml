@@ -20,6 +20,8 @@ matrix:
   fast_finish: true
   include:
     - rvm: 2.4.0
+      before_script:
+        - bundle exec danger
       after_script:
         - bundle exec codeclimate-test-reporter
 

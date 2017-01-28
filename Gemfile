@@ -22,6 +22,9 @@ end
 
 group :test do
   gem "codeclimate-test-reporter", :require => false
+  gem "danger-changelog", :require => false
+  gem "danger-commit_lint", :require => false
+  gem "danger-rubocop", :require => false
   gem "rspec", "~> 3.4"
   gem "simplecov"
 end
