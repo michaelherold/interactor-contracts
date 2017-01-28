@@ -1,8 +1,6 @@
 if ENV["COVERAGE"] || ENV["CI"]
   require "simplecov"
 
-  SimpleCov.formatters = [SimpleCov::Formatter::HTMLFormatter]
-
   SimpleCov.start do
     add_filter "/spec/"
   end

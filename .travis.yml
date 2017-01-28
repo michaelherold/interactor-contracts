@@ -18,6 +18,10 @@ matrix:
     - rvm: jruby-head
     - rvm: ruby-head
   fast_finish: true
+  include:
+    - rvm: 2.4.0
+      after_script:
+        - bundle exec codeclimate-test-reporter
 
 addons:
   code_climate:
