@@ -10,6 +10,6 @@ scheme are considered to be bugs.
 
 ### Added
 
-- Nothing yet.
+- [#2](https://github.com/michaelherold/interactor-contracts/pull/2): Support for dry-validations ~> 0.10 - [@andrewaguiar](https://github.com/andrewaguiar).
 
 [unreleased]: https://github.com/michaelherold/interactor-contracts
