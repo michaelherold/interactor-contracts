@@ -41,13 +41,13 @@ class AuthenticateUser
   include Interactor::Contracts
 
   expects do
-    attr(:email)    { |email| email.filled? }
-    attr(:password) { |password| password.filled? }
+    required(:email).filled
+    required(:password).filled
   end
 
   assures do
-    attr(:user)  { |user| user.filled? }
-    attr(:token) { |token| token.filled? }
+    required(:user).filled
+    required(:token).filled
   end
 
   def call
