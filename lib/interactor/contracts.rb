@@ -1,7 +1,7 @@
 require "dry-validation"
 require "interactor"
+require "interactor/contracts/breach"
 require "interactor/contracts/errors"
-require "interactor/contracts/violation"
 
 module Interactor
   # Create a contract for your interactor that specifies what it expects as
@@ -30,11 +30,11 @@ module Interactor
       result = contracts.call(context.to_h)
 
       unless result.success?
-        violations = result.messages.map do |property, messages|
-          Violation.new(property, messages)
+        breached_terms = result.messages.map do |property, messages|
+          Breach.new(property, messages)
         end
         self.class.consequences.each do |handler|
-          instance_exec(violations, &handler)
+          instance_exec(breached_terms, &handler)
         end
       end
     end
@@ -84,11 +84,11 @@ module Interactor
         end
       end
 
-      # The default consequence that fails the context.
+      # The default consequence of a breached contract.
       #
       # @return [#call] the default consequence
       def default_consequence
-        ->(_violations) { context.fail! }
+        ->(_breached_terms) { context.fail! }
       end
 
       # Defines the expectations of an Interactor and creates a before hook to
@@ -126,7 +126,7 @@ module Interactor
         @expectations ||= Class.new(Dry::Validation::Schema)
       end
 
-      # Defines a violation handler that is called when a contract is violated.
+      # Defines a consequence that is called when a contract is breached.
       #
       # @example
       #
@@ -138,8 +138,8 @@ module Interactor
       #       required(:name).filled
       #     end
       #
-      #     on_violation do |violations|
-      #       context.fail!(:message => "invalid_#{violations.first.property}")
+      #     on_breach do |breaches|
+      #       context.fail!(:message => "invalid_#{breaches.first.property}")
       #     end
       #
       #     def call
@@ -151,7 +151,7 @@ module Interactor
       #
       # @param [Block] block the validation handler as a block of arity 1.
       # @return [void]
-      def on_violation(&block)
+      def on_breach(&block)
         defined_consequences << block
       end
 

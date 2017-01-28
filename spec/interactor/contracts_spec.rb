@@ -136,7 +136,7 @@ RSpec.describe Interactor::Contracts do
     end
   end
 
-  describe ".on_violation" do
+  describe ".on_breach" do
     it "replaces the default validation handler" do
       interactor = Class.new do
         include Interactor
@@ -144,7 +144,7 @@ RSpec.describe Interactor::Contracts do
 
         expects { required(:name).filled }
 
-        on_violation { |_| context[:message] = "Bilbo Baggins!" }
+        on_breach { |_| context[:message] = "Bilbo Baggins!" }
       end
 
       result = interactor.call
@@ -153,14 +153,14 @@ RSpec.describe Interactor::Contracts do
       expect(result.message).to eq("Bilbo Baggins!")
     end
 
-    it "handles postcondition violations" do
+    it "handles postcondition breached terms" do
       interactor = Class.new do
         include Interactor
         include Interactor::Contracts
 
         assures { required(:name).filled }
 
-        on_violation { |_| context[:message] = "Bilbo Baggins!" }
+        on_breach { |_| context[:message] = "Bilbo Baggins!" }
       end
 
       result = interactor.call
@@ -176,8 +176,8 @@ RSpec.describe Interactor::Contracts do
 
         expects { required(:name).filled }
 
-        on_violation { |_| context[:silly] = "You did something silly." }
-        on_violation { |_| context.fail!(:message => "Bilbo Baggins!") }
+        on_breach { |_| context[:silly] = "You did something silly." }
+        on_breach { |_| context.fail!(:message => "Bilbo Baggins!") }
       end
 
       result = interactor.call
@@ -194,8 +194,8 @@ RSpec.describe Interactor::Contracts do
 
         expects { required(:name).filled }
 
-        on_violation { |_| context.fail!(:message => "Bilbo Baggins!") }
-        on_violation { |_| context[:wont_be_set] = "Nope" }
+        on_breach { |_| context.fail!(:message => "Bilbo Baggins!") }
+        on_breach { |_| context[:wont_be_set] = "Nope" }
       end
 
       result = interactor.call

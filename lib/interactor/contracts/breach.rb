@@ -1,19 +1,19 @@
 module Interactor
   module Contracts
-    # A wrapper for contract violations that encapsulates the failed property
-    # and its messages.
-    class Violation
+    # A wrapper for breached contract terms that encapsulates the failed
+    # property and its messages.
+    class Breach
       # @param [Symbol] property the property violated in the contract
-      # @param [Array<String>] messages the messages describing the violation.
+      # @param [Array<String>] messages the messages describing the breach.
       def initialize(property, messages)
         @property = property
         @messages = messages
       end
 
-      # The messages describing the violation.
+      # The messages describing the breach.
       #
       # @!attribute [r] messages
-      #   @return [Array<String>] the messages describing the violation
+      #   @return [Array<String>] the messages describing the breach
       attr_reader :messages
 
       # The property violated in the contract.
