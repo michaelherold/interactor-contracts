@@ -1,6 +1,6 @@
 require "dry-validation"
 require "interactor"
-require "interactor/contracts/breach"
+require "interactor/contracts/contract"
 require "interactor/contracts/errors"
 
 module Interactor
@@ -20,6 +20,13 @@ module Interactor
 
     private
 
+    # The Contract to enforce on calls to the Interactor.
+    #
+    # @return [Contract]
+    def contract
+      self.class.contract
+    end
+
     # Checks for a breach of contracts against the context's data and applies
     # the consequences if there is a breach.
     #
@@ -27,27 +34,17 @@ module Interactor
     # @param [#call] contracts a callable object
     # @return [void]
     def enforce_contracts(contracts)
-      result = contracts.call(context.to_h)
+      outcome = contracts.call(context)
 
-      unless result.success?
-        breached_terms = result.messages.map do |property, messages|
-          Breach.new(property, messages)
-        end
-        self.class.consequences.each do |handler|
-          instance_exec(breached_terms, &handler)
+      unless outcome.success?
+        contract.consequences.each do |handler|
+          instance_exec(outcome.breaches, &handler)
         end
       end
     end
 
     # Defines the class-level DSL that enables Interactor contracts.
     module ClassMethods
-      # The assurances the Interactor will fulfill.
-      #
-      # @return [Dry::Validations::Schema] the assurances schema
-      def assurances
-        @assurances ||= Class.new(Dry::Validation::Schema)
-      end
-
       # Defines the assurances of an Interactor and creates an after hook to
       # validate the output when called.
       #
@@ -68,27 +65,16 @@ module Interactor
       # @param [Block] block the block defining the assurances
       # @return [void]
       def assures(&block)
-        self.assurances = extend_schema(assurances, &block)
+        contract.add_assurance(&block)
         define_assurances_hook
       end
 
-      # The consequences for the contract. When no consequences have been
-      # defined, it defaults to an array containing the default consequence.
+      # The Contract to enforce on calls to the Interactor.
       #
-      # @return [Array<#call>] the consequences for the contract
-      def consequences
-        if defined_consequences.empty?
-          Array(default_consequence)
-        else
-          defined_consequences
-        end
-      end
-
-      # The default consequence of a breached contract.
-      #
-      # @return [#call] the default consequence
-      def default_consequence
-        ->(_breached_terms) { context.fail! }
+      # @api private
+      # @return [Contract]
+      def contract
+        @contract ||= Contract.new
       end
 
       # Defines the expectations of an Interactor and creates a before hook to
@@ -115,15 +101,8 @@ module Interactor
       # @param [Block] block the block defining the expectations
       # @return [void]
       def expects(&block)
-        self.expectations = extend_schema(expectations, &block)
+        contract.add_expectation(&block)
         define_expectations_hook
-      end
-
-      # The expectations for arguments passed into the Interactor.
-      #
-      # @return [Dry::Validations::Schema] the expectations schema
-      def expectations
-        @expectations ||= Class.new(Dry::Validation::Schema)
       end
 
       # Defines a consequence that is called when a contract is breached.
@@ -149,16 +128,13 @@ module Interactor
       #
       #   CreatePerson.call(:first_name => "Billy").message  #=> "invalid_name"
       #
-      # @param [Block] block the validation handler as a block of arity 1.
+      # @param [Block] block the consequence as a block of arity 1.
       # @return [void]
       def on_breach(&block)
-        defined_consequences << block
+        contract.add_consequence(block)
       end
 
       private
-
-      attr_writer :assurances
-      attr_writer :expectations
 
       # Flags whether the assurances hook has been defined.
       #
@@ -182,7 +158,7 @@ module Interactor
       def define_assurances_hook
         return if defined_assurances_hook?
 
-        after { enforce_contracts(self.class.assurances.new) }
+        after { enforce_contracts(contract.assurances) }
 
         @defined_assurances_hook = true
       end
@@ -195,20 +171,9 @@ module Interactor
       def define_expectations_hook
         return if defined_expectations_hook?
 
-        before { enforce_contracts(self.class.expectations.new) }
+        before { enforce_contracts(contract.expectations) }
 
         @defined_expectations_hook = true
-      end
-
-      # The consequences defined for the contract.
-      #
-      # @return [Array<#call>] the consequences for the contract
-      def defined_consequences
-        @defined_consequences ||= []
-      end
-
-      def extend_schema(schema = Dry::Validation::Schema, &block)
-        Dry::Validation.Schema(schema, {:build => false}, &block)
       end
     end
   end

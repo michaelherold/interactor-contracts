@@ -10,6 +10,26 @@ RSpec.describe Interactor::Contracts do
   end
 
   describe ".assures" do
+    it "works on Interactor::Context objects" do
+      interactor = Class.new do
+        include Interactor
+        include Interactor::Contracts
+
+        assures do
+          required(:name).filled
+        end
+
+        def call
+          if context.enabled?
+            context.name = "Billy"
+          end
+        end
+      end
+
+      context = Interactor::Context.new(:enabled? => true)
+      expect(interactor.call(context)).to be_a_success
+    end
+
     it "creates and uses a schema to validate outputs" do
       interactor = Class.new do
         include Interactor
