@@ -15,3 +15,4 @@
 
 * [#3](https://github.com/michaelherold/interactor-contracts/pull/3): Updated all dependencies to fix build process - [@michaelherold](https://github.com/michaelherold).
 * [#4](https://github.com/michaelherold/interactor-contracts/pull/4): Added Danger as a collaboration tool - [@michaelherold](https://github.com/michaelherold).
+* [#6](https://github.com/michaelherold/interactor-contracts/pull/6): Updated the README - [@michaelherold](https://github.com/michaelherold).

@@ -50,6 +50,10 @@ class AuthenticateUser
     required(:token).filled
   end
 
+  on_breach do |breaches|
+    context.fail!(:breaches => breaches)
+  end
+
   def call
     if user = User.authenticate(context.email, context.password)
       context.user = user
@@ -76,6 +80,12 @@ the contract and are passed along to the outgoing (successful) context.
 Both `expects` and `assures` wrap [dry-validation], so you can use any
 predicates defined in it to describe the expected inputs and outputs of your
 interactor.
+
+To hook into a failed expectation or assurance, you can use the `on_breach`
+method to defined a breach handler. It should take a 1-arity block that expects
+an array of `Breach` objects. These objects have a `property` attribute that
+will give you the key that's in breach of its contract. Breaches also have a
+`messages` attribute that gives the reasons that property is in breach.
 
 [dry-validation]: https://github.com/dryrb/dry-validation
 
@@ -114,10 +124,11 @@ https://github.com/michaelherold/interactor-contracts.
 This library aims to support and is [tested against][travis] the following Ruby
 versions:
 
-* Ruby 2.0
 * Ruby 2.1
 * Ruby 2.2
-* JRuby 9.0
+* Ruby 2.3
+* Ruby 2.4
+* JRuby 9.1
 
 If something doesn't work on one of these versions, it's a bug.
 
