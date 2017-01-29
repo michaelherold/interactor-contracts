@@ -13,6 +13,7 @@ group :development do
   gem "mutant-rspec"
   gem "rubocop", "0.47.1"
   gem "yard", "~> 0.8"
+  gem "yardstick"
 end
 
 group :development, :test do
