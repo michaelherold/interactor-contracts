@@ -4,11 +4,9 @@ module Interactor
   module Contracts
     # Defines the class-level DSL that enables Interactor contracts.
     module DSL
-      # Defines the assurances of an Interactor and creates an after hook to
-      # validate the output when called.
+      # Defines the assurances of an Interactor and creates an after hook
       #
       # @example
-      #
       #   class CreatePerson
       #     include Interactor
       #     include Interactor::Contracts
@@ -21,6 +19,8 @@ module Interactor
       #       context.person = Person.new
       #     end
       #   end
+      #
+      # @api public
       # @param [Block] block the block defining the assurances
       # @return [void]
       def assures(&block)
@@ -28,19 +28,29 @@ module Interactor
         define_assurances_hook
       end
 
-      # The Contract to enforce on calls to the Interactor.
+      # The Contract to enforce on calls to the Interactor
       #
-      # @api private
+      # @example
+      #   class CreatePerson
+      #     include Interactor
+      #     include Interactor::Contracts
+      #
+      #     assures do
+      #       required(:person).filled
+      #     end
+      #
+      #     contracts  #=> <#Interactor::Contracts::Contract>
+      #   end
+      #
+      # @api semipublic
       # @return [Contract]
       def contract
         @contract ||= Contract.new
       end
 
-      # Defines the expectations of an Interactor and creates a before hook to
-      # validate the input when called.
+      # Defines the expectations of an Interactor and creates a before hook
       #
       # @example
-      #
       #   class CreatePerson
       #     include Interactor
       #     include Interactor::Contracts
@@ -57,6 +67,7 @@ module Interactor
       #   CreatePerson.call(:first_name => "Billy").success?  #=> false
       #   CreatePerson.call(:name => "Billy").success?        #=> true
       #
+      # @api public
       # @param [Block] block the block defining the expectations
       # @return [void]
       def expects(&block)
@@ -64,10 +75,9 @@ module Interactor
         define_expectations_hook
       end
 
-      # Defines a consequence that is called when a contract is breached.
+      # Defines a consequence that is called when a contract is breached
       #
       # @example
-      #
       #   class CreatePerson
       #     include Interactor
       #     include Interactor::Contracts
@@ -87,6 +97,7 @@ module Interactor
       #
       #   CreatePerson.call(:first_name => "Billy").message  #=> "invalid_name"
       #
+      # @api public
       # @param [Block] block the consequence as a block of arity 1.
       # @return [void]
       def on_breach(&block)
@@ -95,23 +106,23 @@ module Interactor
 
       private
 
-      # Flags whether the assurances hook has been defined.
+      # Flags whether the assurances hook has been defined
       #
-      # @!attribute [r] defined_assurances_hook
-      #   @return [TrueClass, FalseClass] true if the hook is defined
+      # @api private
+      # @return [TrueClass, FalseClass] true if the hook is defined
       attr_reader :defined_assurances_hook
       alias_method :defined_assurances_hook?, :defined_assurances_hook
 
-      # Flags whether the expectations hook has been defined.
+      # Flags whether the expectations hook has been defined
       #
-      # @!attribute [r] defined_assurances_hook
-      #   @return [TrueClass, FalseClass] true if the hook is defined
+      # @api private
+      # @return [TrueClass, FalseClass] true if the hook is defined
       attr_reader :defined_expectations_hook
       alias_method :defined_expectations_hook?, :defined_expectations_hook
 
-      # Defines an after hook that validates the Interactor's output against
-      # its contract.
+      # Defines an after hook that validates the Interactor's output
       #
+      # @api private
       # @raise [Interactor::Failure] if the input fails to meet its contract.
       # @return [void]
       def define_assurances_hook
@@ -122,9 +133,9 @@ module Interactor
         @defined_assurances_hook = true
       end
 
-      # Defines a before hook that validates the Interactor's input against its
-      # contract.
+      # Defines a before hook that validates the Interactor's input
       #
+      # @api private
       # @raise [Interactor::Failure] if the input fails to meet its contract.
       # @return [void]
       def define_expectations_hook
