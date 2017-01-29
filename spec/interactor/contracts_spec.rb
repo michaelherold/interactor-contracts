@@ -6,7 +6,10 @@ RSpec.describe Interactor::Contracts do
       Class.new do
         include Interactor::Contracts
       end
-    end.to raise_error(Interactor::Contracts::NotAnInteractor)
+    end.to raise_error(
+      Interactor::Contracts::NotAnInteractor,
+      /.*Class.*does not include `Interactor'$/
+    )
   end
 
   describe ".assures" do
@@ -164,13 +167,16 @@ RSpec.describe Interactor::Contracts do
 
         expects { required(:name).filled }
 
-        on_breach { |_| context[:message] = "Bilbo Baggins!" }
+        on_breach do |breaches|
+          breach = breaches.first
+          context.fail!(breach.property => breach.messages)
+        end
       end
 
       result = interactor.call
 
-      expect(result).to be_a_success
-      expect(result.message).to eq("Bilbo Baggins!")
+      expect(result).to be_a_failure
+      expect(result.name).to eq(["is missing"])
     end
 
     it "handles postcondition breached terms" do

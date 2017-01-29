@@ -13,7 +13,7 @@ module Interactor
     # @param [Class, Module] descendant the including class or module
     # @return [void]
     def self.included(descendant)
-      unless descendant.ancestors.include?(Interactor)
+      unless descendant.include?(Interactor)
         fail NotAnInteractor, "#{descendant} does not include `Interactor'"
       end
       descendant.extend(DSL)

@@ -12,7 +12,7 @@ module Interactor
       #
       # @api public
       # @param [Dry::Validation::Schema] terms the terms to start with
-      def initialize(terms = Class.new(::Dry::Validation::Schema))
+      def initialize(terms = Class.new(Dry::Validation::Schema))
         @terms = terms
       end
 
@@ -28,7 +28,7 @@ module Interactor
       # @param [Block] term the term to add to the terms
       # @return [void]
       def add(&term)
-        @terms = ::Dry::Validation.Schema(@terms, {:build => false}, &term)
+        @terms = Dry::Validation.Schema(@terms, {:build => false}, &term)
       end
 
       # Validates the terms against a given context

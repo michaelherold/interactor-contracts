@@ -45,8 +45,6 @@ module Interactor
       # @api semipublic
       # @return [Array<Breach>] the breaches of the Terms' constraints
       def breaches
-        return [] if success?
-
         result.messages.map do |property, messages|
           Breach.new(property, messages)
         end
