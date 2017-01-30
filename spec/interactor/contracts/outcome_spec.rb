@@ -8,6 +8,10 @@ RSpec.describe Interactor::Contracts::Outcome do
       let(:result) { successful_result }
 
       it { is_expected.to eq([]) }
+
+      it "converts to an empty hash" do
+        expect(subject.to_h).to eq({})
+      end
     end
 
     context "for an unsuccessful result" do
@@ -16,8 +20,12 @@ RSpec.describe Interactor::Contracts::Outcome do
       it "has a breach for every failed validation" do
         expect(subject.size).to eq(1)
         breach = subject.first
-        expect(breach.messages).to eq(["is missing"])
+        expect(breach.messages).to eq(["name is missing"])
         expect(breach.property).to eq(:name)
+      end
+
+      it "converts to a hash based on its breaches" do
+        expect(subject.to_h).to eq(:name => ["name is missing"])
       end
     end
   end

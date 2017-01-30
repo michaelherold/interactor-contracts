@@ -12,6 +12,21 @@ RSpec.describe Interactor::Contracts do
     )
   end
 
+  it "has a default consequence that fails and sets keys with messages" do
+    interactor = Class.new do
+      include Interactor
+      include Interactor::Contracts
+
+      assures do
+        required(:name).filled
+      end
+    end
+
+    result = interactor.call({})
+    expect(result).to be_a_failure
+    expect(result.name).to eq(["name is missing"])
+  end
+
   describe ".assures" do
     it "works on Interactor::Context objects" do
       interactor = Class.new do
@@ -176,7 +191,7 @@ RSpec.describe Interactor::Contracts do
       result = interactor.call
 
       expect(result).to be_a_failure
-      expect(result.name).to eq(["is missing"])
+      expect(result.name).to eq(["name is missing"])
     end
 
     it "handles postcondition breached terms" do

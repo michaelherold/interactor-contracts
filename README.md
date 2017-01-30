@@ -51,7 +51,7 @@ class AuthenticateUser
   end
 
   on_breach do |breaches|
-    context.fail!(:breaches => breaches)
+    context.fail!(breaches)
   end
 
   def call
@@ -86,6 +86,19 @@ method to defined a breach handler. It should take a 1-arity block that expects
 an array of `Breach` objects. These objects have a `property` attribute that
 will give you the key that's in breach of its contract. Breaches also have a
 `messages` attribute that gives the reasons that property is in breach.
+
+By default, when an `on_breach` consequence is not specified, the contract will
+`#fail!` the `Interactor::Context` with the keys that are in breach and arrays
+of messages about what the breaches are.
+
+For example, the above interactor acts as follows:
+
+```ruby
+result = AuthenticateUser.call({})
+#=> #<Interactor::Context email=["email is missing"], password=["password is missing"]>
+
+result.failure?  #=> true
+```
 
 [dry-validation]: https://github.com/dryrb/dry-validation
 

@@ -5,6 +5,7 @@
 ### Added
 
 * [#2](https://github.com/michaelherold/interactor-contracts/pull/2): Support for dry-validations ~> 0.10 - [@andrewaguiar](https://github.com/andrewaguiar).
+* [#7](https://github.com/michaelherold/interactor-contracts/pull/7): More ergonomic error handling via `BreachSet#to_hash` - [@michaelherold](https://github.com/michaelherold).
 * Your contribution here.
 
 ### Fixed
