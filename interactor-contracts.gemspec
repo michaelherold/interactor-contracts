@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage    = "https://github.com/michaelherold/interactor-contracts"
   spec.license     = "MIT"
 
-  spec.files = %w(CHANGELOG.md LICENSE.md README.me Rakefile)
+  spec.files = %w(CHANGELOG.md CONTRIBUTING.md LICENSE.md README.md)
   spec.files += %w(interactor-contracts.gemspec)
   spec.files += Dir["lib/**/*.rb"]
   spec.require_paths = ["lib"]
