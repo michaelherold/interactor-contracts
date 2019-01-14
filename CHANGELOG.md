@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Security
 
-* Your contribution here.
+* [#15](https://github.com/michaelherold/interactor-contracts/pull/15): Update vulnerable dependencies in the development harness. No user-facing change - [@michaelherold](https://github.com/michaelherold).
 
 ### Miscellaneous
 
