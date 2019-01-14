@@ -1,4 +1,6 @@
-require "interactor/contracts/terms"
+# frozen_string_literal: true
+
+require 'interactor/contracts/terms'
 
 module Interactor
   module Contracts
@@ -20,6 +22,7 @@ module Interactor
         @consequences = consequences
         @expectations = expectations
       end
+      # rubocop:enable Metrics/LineLength
 
       # The assurances the Contract will fulfill
       #

@@ -1,2 +1,3 @@
-# rubocop:disable Style/FileName
-require "interactor/contracts"
+# frozen_string_literal: true
+
+require 'interactor/contracts'

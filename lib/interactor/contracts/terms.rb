@@ -1,5 +1,7 @@
-require "dry-validation"
-require "interactor/contracts/outcome"
+# frozen_string_literal: true
+
+require 'dry-validation'
+require 'interactor/contracts/outcome'
 
 module Interactor
   module Contracts
@@ -28,7 +30,7 @@ module Interactor
       # @param [Block] term the term to add to the terms
       # @return [void]
       def add(&term)
-        @terms = Dry::Validation.Schema(@terms, {:build => false}, &term)
+        @terms = Dry::Validation.Schema(@terms, { build: false }, &term)
       end
 
       # Validates the terms against a given context

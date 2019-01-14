@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Interactor
   module Contracts
     # A wrapper for breached contract terms that encapsulates the failed
@@ -53,7 +55,7 @@ module Interactor
       # @api public
       # @return [Hash]
       def to_h
-        {property => messages}
+        { property => messages }
       end
     end
   end

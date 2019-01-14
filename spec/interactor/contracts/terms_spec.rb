@@ -1,7 +1,9 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe Interactor::Contracts::Terms do
-  it "can have multiple terms added to it" do
+  it 'can have multiple terms added to it' do
     terms = described_class.new
     terms.add do
       required(:title).filled
@@ -17,8 +19,8 @@ RSpec.describe Interactor::Contracts::Terms do
     expect(outcome.breaches.size).to eq(2)
 
     outcome = terms.call(
-      :title => "There and Back Again",
-      :author => "Bilbo Baggins"
+      title: 'There and Back Again',
+      author: 'Bilbo Baggins'
     )
 
     expect(outcome).to be_a_success
@@ -26,7 +28,7 @@ RSpec.describe Interactor::Contracts::Terms do
     expect(outcome.breaches.size).to eq(0)
   end
 
-  it "is a success when there are no constraints" do
+  it 'is a success when there are no constraints' do
     terms = described_class.new
 
     outcome = terms.call({})
@@ -35,19 +37,19 @@ RSpec.describe Interactor::Contracts::Terms do
     expect(outcome.breaches).to be_empty
   end
 
-  it "can take an existing schema as an argument" do
+  it 'can take an existing schema as an argument' do
     terms = described_class.new(schema)
 
     expect(terms.call({})).to be_a_failure
   end
 
-  it "works with an Interactor::Context" do
+  it 'works with an Interactor::Context' do
     terms = described_class.new
     terms.add do
       required(:name).filled
     end
 
-    outcome = terms.call(Interactor::Context.new(:name => "Bilbo Baggins"))
+    outcome = terms.call(Interactor::Context.new(name: 'Bilbo Baggins'))
 
     expect(outcome).to be_a_success
     expect(outcome.breaches).to be_empty
@@ -55,7 +57,7 @@ RSpec.describe Interactor::Contracts::Terms do
 
   def schema
     base = Class.new(Dry::Validation::Schema)
-    Dry::Validation.Schema(base, :build => false) do
+    Dry::Validation.Schema(base, build: false) do
       required(:name).filled
     end
   end

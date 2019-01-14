@@ -1,4 +1,6 @@
-require "interactor/contracts/contract"
+# frozen_string_literal: true
+
+require 'interactor/contracts/contract'
 
 module Interactor
   module Contracts
@@ -111,14 +113,14 @@ module Interactor
       # @api private
       # @return [TrueClass, FalseClass] true if the hook is defined
       attr_reader :defined_assurances_hook
-      alias_method :defined_assurances_hook?, :defined_assurances_hook
+      alias defined_assurances_hook? defined_assurances_hook
 
       # Flags whether the expectations hook has been defined
       #
       # @api private
       # @return [TrueClass, FalseClass] true if the hook is defined
       attr_reader :defined_expectations_hook
-      alias_method :defined_expectations_hook?, :defined_expectations_hook
+      alias defined_expectations_hook? defined_expectations_hook
 
       # Defines an after hook that validates the Interactor's output
       #

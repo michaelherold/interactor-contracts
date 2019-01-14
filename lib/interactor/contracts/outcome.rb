@@ -1,6 +1,8 @@
-require "forwardable"
-require "interactor/contracts/breach"
-require "interactor/contracts/breach_set"
+# frozen_string_literal: true
+
+require 'forwardable'
+require 'interactor/contracts/breach'
+require 'interactor/contracts/breach_set'
 
 module Interactor
   module Contracts
@@ -46,7 +48,7 @@ module Interactor
       # @api semipublic
       # @return [Array<Breach>] the breaches of the Terms' constraints
       def breaches
-        BreachSet.new(result.messages(:full => true).map do |property, messages|
+        BreachSet.new(result.messages(full: true).map do |property, messages|
           Breach.new(property, messages)
         end)
       end

@@ -1,4 +1,6 @@
-require "delegate"
+# frozen_string_literal: true
+
+require 'delegate'
 
 module Interactor
   module Contracts
@@ -35,12 +37,11 @@ module Interactor
       # @api public
       # @return [Hash] a hash with property keys and message values
       def to_hash
-        reduce({}) do |result, (property, messages)|
+        each_with_object({}) do |(property, messages), result|
           result[property] = Array(result[property]) | messages
-          result
         end
       end
-      alias_method :to_h, :to_hash
+      alias to_h to_hash
     end
   end
 end

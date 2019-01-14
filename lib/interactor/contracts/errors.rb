@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Interactor
   module Contracts
     # Base error class used for all errors within the gem.

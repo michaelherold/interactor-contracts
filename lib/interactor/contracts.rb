@@ -1,7 +1,9 @@
-require "dry-validation"
-require "interactor"
-require "interactor/contracts/dsl"
-require "interactor/contracts/errors"
+# frozen_string_literal: true
+
+require 'dry-validation'
+require 'interactor'
+require 'interactor/contracts/dsl'
+require 'interactor/contracts/errors'
 
 module Interactor
   # Create a contract for your interactor that specifies what it expects as
@@ -14,7 +16,7 @@ module Interactor
     # @return [void]
     def self.included(descendant)
       unless descendant.include?(Interactor)
-        fail NotAnInteractor, "#{descendant} does not include `Interactor'"
+        raise NotAnInteractor, "#{descendant} does not include `Interactor'"
       end
       descendant.extend(DSL)
     end
@@ -35,12 +37,10 @@ module Interactor
     # @param [#call] contracts a callable object
     # @return [void]
     def enforce_contracts(contracts)
-      outcome = contracts.call(context)
+      return unless (outcome = contracts.call(context)).failure?
 
-      unless outcome.success?
-        contract.consequences.each do |handler|
-          instance_exec(outcome.breaches, &handler)
-        end
+      contract.consequences.each do |handler|
+        instance_exec(outcome.breaches, &handler)
       end
     end
   end
