@@ -243,5 +243,69 @@ RSpec.describe Interactor::Contracts do
       expect(result.message).to eq('Bilbo Baggins!')
       expect(result.wont_be_set).to be_nil
     end
+
+    context 'when rule validates array' do
+      subject(:interactor_call) { interactor.call(context) }
+      let(:interactor) do
+        Class.new do
+          include Interactor
+          include Interactor::Contracts
+
+          expects do
+            required(:bar).each do
+              required(:buzz).filled(:str?)
+            end
+          end
+
+          on_breach do |breaches|
+            context.fail!(message: breaches.to_h)
+          end
+        end
+      end
+      let(:context) { { bar: [{}] } }
+
+      it 'works and returns correct error message' do
+        expect { interactor_call }.not_to raise_error
+
+        expect(interactor_call).to be_a_failure
+        expect(interactor_call.message).to eq(
+          bar: {
+            0 => {
+              buzz: ['buzz is missing']
+            }
+          }
+        )
+      end
+    end
+
+    context 'when rule validates nested schema' do
+      subject(:interactor_call) { interactor.call(context) }
+      let(:interactor) do
+        Class.new do
+          include Interactor
+          include Interactor::Contracts
+
+          expects do
+            required(:bar).schema do
+              required(:buzz).filled
+            end
+          end
+
+          on_breach do |breaches|
+            context.fail!(message: breaches.to_h)
+          end
+        end
+      end
+      let(:context) { { bar: {} } }
+
+      it 'works and returns correct error message' do
+        expect { interactor_call }.not_to raise_error
+
+        expect(interactor_call).to be_a_failure
+        expect(interactor_call.message).to eq(
+          bar: { buzz: ['buzz is missing'] }
+        )
+      end
+    end
   end
 end

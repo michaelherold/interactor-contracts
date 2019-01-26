@@ -38,7 +38,13 @@ module Interactor
       # @return [Hash] a hash with property keys and message values
       def to_hash
         each_with_object({}) do |(property, messages), result|
-          result[property] = Array(result[property]) | messages
+          result[property] =
+            if messages.is_a?(Hash)
+              Hash(result[property]).merge(messages)
+            else
+              Array(result[property]) | messages
+            end
+          result
         end
       end
       alias to_h to_hash

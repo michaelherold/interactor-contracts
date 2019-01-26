@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
+* [#16](https://github.com/michaelherold/interactor-contracts/pull/16): Fix BreachSet#to_hash issue with hashed messages in Breaches - [@raykov](https://github.com/raykov).
 * Your contribution here.
 
 ### Security
