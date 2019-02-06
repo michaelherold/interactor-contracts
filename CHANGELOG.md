@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 
-* Your contribution here.
+* [#18](https://github.com/michaelherold/interactor-contracts/pull/18): Add possibility to inherit class with saving interactor-contracts behaviour - [@raykov](https://github.com/raykov).
 
 ### Changed
 

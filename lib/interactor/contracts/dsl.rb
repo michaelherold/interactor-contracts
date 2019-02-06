@@ -77,6 +77,18 @@ module Interactor
         define_expectations_hook
       end
 
+      # Sets contract to given one and calls hooks
+      # define_assurances_hook and define_expectations_hook
+      #
+      # @api semipublic
+      # @param [Contract] contract
+      # @return [void]
+      def inherit_contract(contract)
+        @contract = contract
+        define_assurances_hook
+        define_expectations_hook
+      end
+
       # Defines a consequence that is called when a contract is breached
       #
       # @example
@@ -146,6 +158,15 @@ module Interactor
         before { enforce_contracts(contract.expectations) }
 
         @defined_expectations_hook = true
+      end
+
+      # Defines a callback for class inheritance
+      #
+      # @api private
+      # @param [Class] child a child of inherited class
+      # @return [void]
+      def inherited(child)
+        child.inherit_contract(contract)
       end
     end
   end
