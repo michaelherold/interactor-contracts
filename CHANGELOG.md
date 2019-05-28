@@ -4,36 +4,19 @@ All notable changes to this project will be documented in this file. This projec
 
 [semver]: http://semver.org/spec/v2.0.0.html
 
-## [Unreleased][unreleased]
+## [0.2.0] - 2019-05-27
 
 ### Added
 
 * [#18](https://github.com/michaelherold/interactor-contracts/pull/18): Add possibility to inherit class with saving interactor-contracts behaviour - [@raykov](https://github.com/raykov).
 
-### Changed
-
-* Your contribution here.
-
-### Deprecated
-
-* Your contribution here.
-
-### Removed
-
-* Your contribution here.
-
 ### Fixed
 
 * [#16](https://github.com/michaelherold/interactor-contracts/pull/16): Fix BreachSet#to_hash issue with hashed messages in Breaches - [@raykov](https://github.com/raykov).
-* Your contribution here.
 
 ### Security
 
 * [#15](https://github.com/michaelherold/interactor-contracts/pull/15): Update vulnerable dependencies in the development harness. No user-facing change - [@michaelherold](https://github.com/michaelherold).
-
-### Miscellaneous
-
-* Your contribution here.
 
 ## [0.1.0] - 2017-02-25
 
@@ -52,5 +35,5 @@ All notable changes to this project will be documented in this file. This projec
 * [#4](https://github.com/michaelherold/interactor-contracts/pull/4): Added Danger as a collaboration tool - [@michaelherold](https://github.com/michaelherold).
 * [#6](https://github.com/michaelherold/interactor-contracts/pull/6): Updated the README - [@michaelherold](https://github.com/michaelherold).
 
-[unreleased]: https://github.com/michaelherold/interactor-contracts/compare/v0.1.0...master
+[0.2.0]: https://github.com/michaelherold/interactor-contracts/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/michaelherold/interactor-contracts/tree/v0.1.0
