@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file. This projec
 
 [semver]: http://semver.org/spec/v2.0.0.html
 
+## [Unreleased][unreleased]
+
+### Added
+
+* Your contribution here.
+
+### Changed
+
+* Your contribution here.
+
+### Deprecated
+
+* Your contribution here.
+
+### Removed
+
+* Your contribution here.
+
+### Fixed
+
+* Your contribution here.
+
+### Security
+
+* Your contribution here.
+
+### Miscellaneous
+
+* Your contribution here.
+
 ## [0.2.0] - 2019-05-27
 
 ### Added
@@ -35,5 +65,6 @@ All notable changes to this project will be documented in this file. This projec
 * [#4](https://github.com/michaelherold/interactor-contracts/pull/4): Added Danger as a collaboration tool - [@michaelherold](https://github.com/michaelherold).
 * [#6](https://github.com/michaelherold/interactor-contracts/pull/6): Updated the README - [@michaelherold](https://github.com/michaelherold).
 
+[unreleased]: https://github.com/michaelherold/interactor-contracts/compare/v0.2.0...master
 [0.2.0]: https://github.com/michaelherold/interactor-contracts/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/michaelherold/interactor-contracts/tree/v0.1.0
