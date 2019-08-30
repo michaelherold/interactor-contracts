@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ['Michael Herold']
   spec.email   = ['michael.j.herold@gmail.com']
 
-  spec.summary     = 'Add contacts to your interactors'
-  spec.description = 'Add contacts to your interactors'
+  spec.summary     = 'Add contracts to your interactors'
+  spec.description = 'Add contracts to your interactors'
   spec.homepage    = 'https://github.com/michaelherold/interactor-contracts'
   spec.license     = 'MIT'
 
