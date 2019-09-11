@@ -84,7 +84,11 @@ module Interactor
       # @param [Contract] contract
       # @return [void]
       def inherit_contract(contract)
-        @contract = contract
+        @contract = Contract.new(
+          assurances: contract.assurances.clone,
+          expectations: contract.expectations.clone,
+          consequences: contract.consequences.clone
+        )
         define_assurances_hook
         define_expectations_hook
       end

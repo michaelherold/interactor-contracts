@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
-* Your contribution here.
+* [#26](https://github.com/michaelherold/interactor-contracts/pull/26): Fix bug with inheritance - [@raykov](https://github.com/raykov).
 
 ### Security
 
