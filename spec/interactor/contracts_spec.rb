@@ -253,7 +253,9 @@ RSpec.describe Interactor::Contracts do
 
           expects do
             required(:bar).each do
-              required(:buzz).filled(:str?)
+              schema do
+                required(:buzz).filled(:str?)
+              end
             end
           end
 

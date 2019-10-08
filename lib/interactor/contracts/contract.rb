@@ -7,7 +7,7 @@ module Interactor
     # Contains the assurances, expectations, and consequences of an
     # interactor's contract.
     class Contract
-      # Instantiates a new Contract with the given contraints
+      # Instantiates a new Contract with the given constraints
       #
       # @example
       #   Interactor::Contracts::Contract.new

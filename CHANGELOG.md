@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 
-* Your contribution here.
+* [#27](https://github.com/michaelherold/interactor-contracts/pull/27): Upgrade dry-validation to 1.0 - [@vaihtovirta](https://github.com/vaihtovirta).
 
 ### Changed
 

@@ -56,9 +56,10 @@ RSpec.describe Interactor::Contracts::Terms do
   end
 
   def schema
-    base = Class.new(Dry::Validation::Schema)
-    Dry::Validation.Schema(base, build: false) do
-      required(:name).filled
+    Class.new(Dry::Validation::Contract) do
+      params do
+        required(:name).filled
+      end
     end
   end
 end

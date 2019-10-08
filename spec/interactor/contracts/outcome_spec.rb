@@ -65,7 +65,7 @@ RSpec.describe Interactor::Contracts::Outcome do
   end
 
   def schema
-    Dry::Validation.Schema do
+    Dry::Schema.define do
       required(:name).filled
     end
   end

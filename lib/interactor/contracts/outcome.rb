@@ -10,7 +10,7 @@ module Interactor
     class Outcome
       extend Forwardable
 
-      # Instantiantes a new Outcome based on the results of a Terms enforcement
+      # Instantiates a new Outcome based on the results of a Terms enforcement
       #
       # @api private
       # @param [Dry::Validation::Result] result
@@ -48,7 +48,7 @@ module Interactor
       # @api semipublic
       # @return [Array<Breach>] the breaches of the Terms' constraints
       def breaches
-        BreachSet.new(result.messages(full: true).map do |property, messages|
+        BreachSet.new(result.errors(full: true).to_h.map do |property, messages|
           Breach.new(property, messages)
         end)
       end
