@@ -18,7 +18,7 @@ module Interactor
       #       required(:password).filled
       #     end
       #
-      #     assures do
+      #     promises do
       #       required(:user).filled
       #       required(:token).filled
       #     end

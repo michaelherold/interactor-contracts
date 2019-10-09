@@ -4,7 +4,7 @@ require 'interactor/contracts/outcome'
 
 module Interactor
   module Contracts
-    # The terms of a contract, either for assurances or expectations
+    # The terms of a contract, either for promises or expectations
     class Terms
       # Instantiates a new set of terms
       #

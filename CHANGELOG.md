@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
-* Your contribution here.
+* [#29](https://github.com/michaelherold/interactor-contracts/pull/29): Renamed the `assures` method to `promises` and all of the internals to reflect the new naming. This is a backward-compatible change due to an alias of `assures` to `promises` - [@michaelherold](https://github.com/michaelherold), suggested by [@KelseyDH](https://github.com/KelseyDH).
 
 ### Deprecated
 

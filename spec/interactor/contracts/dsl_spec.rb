@@ -97,7 +97,31 @@ RSpec.describe Interactor::Contracts::DSL do
     end
   end
 
-  describe '.assures' do
+  describe '.assures (backwards compatibility)' do
+    let(:klass) do
+      Class.new do
+        include Interactor
+        include Interactor::Contracts
+
+        assures do
+          required(:bar).filled
+        end
+
+        on_breach do |breaches|
+          context.fail!(message: breaches.to_h)
+        end
+      end
+    end
+
+    subject { klass.call({}) }
+
+    it 'validates the output' do
+      expect(subject).to be_a_failure
+      expect(subject.message).to eq(bar: ['bar is missing'])
+    end
+  end
+
+  describe '.promises' do
     subject(:interactor_call) { klass.call(context) }
 
     let(:parent) do
@@ -105,7 +129,7 @@ RSpec.describe Interactor::Contracts::DSL do
         include Interactor
         include Interactor::Contracts
 
-        assures do
+        promises do
           required(:bar).filled
         end
 
@@ -142,7 +166,7 @@ RSpec.describe Interactor::Contracts::DSL do
     context 'when more than one child' do
       let!(:child) do
         Class.new(parent) do
-          assures do
+          promises do
             required(:foo).filled
           end
         end
@@ -150,7 +174,7 @@ RSpec.describe Interactor::Contracts::DSL do
 
       let!(:other_child) do
         Class.new(parent) do
-          assures do
+          promises do
             required(:buzz).filled
           end
         end

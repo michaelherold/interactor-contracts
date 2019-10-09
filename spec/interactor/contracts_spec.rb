@@ -19,7 +19,7 @@ RSpec.describe Interactor::Contracts do
       include Interactor
       include Interactor::Contracts
 
-      assures do
+      promises do
         required(:name).filled
       end
     end
@@ -29,13 +29,13 @@ RSpec.describe Interactor::Contracts do
     expect(result.name).to eq(['name is missing'])
   end
 
-  describe '.assures' do
+  describe '.promises' do
     it 'works on Interactor::Context objects' do
       interactor = Class.new do
         include Interactor
         include Interactor::Contracts
 
-        assures do
+        promises do
           required(:name).filled
         end
 
@@ -53,7 +53,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor
         include Interactor::Contracts
 
-        assures do
+        promises do
           required(:name).filled
         end
 
@@ -71,11 +71,11 @@ RSpec.describe Interactor::Contracts do
         include Interactor
         include Interactor::Contracts
 
-        assures do
+        promises do
           required(:first_name).filled
         end
 
-        assures do
+        promises do
           required(:last_name).filled
         end
 
@@ -91,16 +91,16 @@ RSpec.describe Interactor::Contracts do
       expect(interactor.call(enabled?: false)).to be_a_failure
     end
 
-    it 'only validates the assurances once when defined separately' do
+    it 'only validates the promises once when defined separately' do
       interactor = Class.new do
         include Interactor
         include Interactor::Contracts
 
-        assures do
+        promises do
           required(:first_name).filled
         end
 
-        assures do
+        promises do
           required(:last_name).filled
         end
 
@@ -197,7 +197,7 @@ RSpec.describe Interactor::Contracts do
         include Interactor
         include Interactor::Contracts
 
-        assures { required(:name).filled }
+        promises { required(:name).filled }
 
         on_breach { |_| context[:message] = 'Bilbo Baggins!' }
       end
