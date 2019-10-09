@@ -3,8 +3,6 @@ language: ruby
 rvm:
   - 2.4
   - 2.5
-  - 2.6
-  - jruby-head
   - ruby-head
 script: bundle exec rspec
 sudo: false
@@ -20,11 +18,10 @@ matrix:
     - rvm: 2.6
       before_script:
         - bundle exec danger
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - chmod +x ./cc-test-reporter
+        - ./cc-test-reporter before-build
       after_script:
-        - bundle exec codeclimate-test-reporter
-    - rvm: jruby-9.1.5.0
-      env: JRUBY_OPTS=''
-
-addons:
-  code_climate:
-    repo_token: 4c8d32857f6271a921d0db0bdf9a316c47b5cc89827c85da862ab2738842dbb1
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+    - rvm: jruby-9.2.8.0
+      jdk: openjdk8
