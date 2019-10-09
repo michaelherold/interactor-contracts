@@ -3,6 +3,40 @@
 require 'spec_helper'
 
 RSpec.describe Interactor::Contracts::DSL do
+  describe '.config' do
+    it 'allows you to configure the messaging for the contracts' do
+      require 'i18n'
+      require 'dry/schema/messages/i18n'
+
+      klass = Class.new do
+        include Interactor
+        include Interactor::Contracts
+
+        config do
+          messages.backend = :i18n
+          messages.top_namespace = :my_app
+          messages.load_paths << File.expand_path(
+            File.join('..', '..', 'support', 'errors.yml'),
+            __dir__
+          )
+        end
+
+        expects do
+          required(:bar).filled
+        end
+
+        on_breach do |breaches|
+          context.fail!(message: breaches.to_h)
+        end
+      end
+
+      result = klass.call
+
+      expect(result).to be_a_failure
+      expect(result.message).to eq(bar: ['bar is foobared'])
+    end
+  end
+
   describe '.expects' do
     subject(:interactor_call) { klass.call(context) }
 

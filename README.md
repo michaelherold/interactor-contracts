@@ -103,6 +103,36 @@ result.failure?  #=> true
 
 [dry-validation]: https://github.com/dryrb/dry-validation
 
+### I18n support
+
+You can [configure the underlying `dry-validation` contract][config] by passing
+a block to the `config` method in your contract. This block will be evaluated on
+the underlying configuration for the contract. For example, if you want to set
+up the contract to use I18n in your Rails app, you might do something like this:
+
+```ruby
+class MyInteractor
+  include Interactor
+  include Interactor::Contracts
+
+  config do
+    messages.backend = :i18n
+    messages.load_paths << Rails.root / 'config' / 'locales' / 'errors.yml'
+    messages.top_namespace = :interactor_contracts
+  end
+end
+```
+
+This sets up the I18n system (assuming the delicate load-order has been done in
+the right way - you have to require `i18n` prior to requiring
+`interactor-contracts` since we load `dry-validation` immediately) to use your
+custom file. All lookups for error messages happen starting at the
+`interactor_contracts` key in this example.
+
+See [the documentation for `dry-validation`][config] for more information.
+
+[config]: https://dry-rb.org/gems/dry-validation/1.0/configuration/
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run

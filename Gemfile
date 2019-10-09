@@ -19,6 +19,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'i18n'
   gem 'pry'
   gem 'rake', '< 11'
 end
