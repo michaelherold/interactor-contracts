@@ -30,6 +30,10 @@ module Interactor
       # @return [void]
       def add(&term)
         @terms = Class.new(Dry::Validation::Contract).tap do |new_terms|
+          new_terms.instance_variable_set(
+            :@config,
+            @terms.instance_variable_get(:@config).dup
+          )
           new_terms.params(@terms.schema, &term)
         end
       end
@@ -50,6 +54,15 @@ module Interactor
         define_empty_schema
 
         Outcome.new(@terms.new.call(context.to_h))
+      end
+
+      # Configures the underlying contracts within the terms
+      #
+      # @api private
+      # @private
+      # @return [void]
+      def config(&block)
+        @terms.config.instance_exec(&block)
       end
 
       private

@@ -31,6 +31,27 @@ module Interactor
       end
       alias assures promises
 
+      # Sends configuration set up to the underlying contracts in the terms
+      #
+      # @example
+      #   class CreatePerson
+      #     include Interactor
+      #     include Interactor::Contracts
+      #
+      #     config do
+      #       messages.backend = :i18n
+      #       messages.top_namespace = :my_app
+      #       messages.load_paths << File.join(__dir__, '..', 'errors.yml')
+      #     end
+      #   end
+      #
+      # @api public
+      # @params [Block] block the block to execute for the underlying contracts
+      # @return [void]
+      def config(&block)
+        contract.config(&block)
+      end
+
       # The Contract to enforce on calls to the Interactor
       #
       # @example

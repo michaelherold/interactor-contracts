@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Added
 
 * [#27](https://github.com/michaelherold/interactor-contracts/pull/27): Upgrade dry-validation to 1.0 - [@vaihtovirta](https://github.com/vaihtovirta).
+* [#30](https://github.com/michaelherold/interactor-contracts/pull/30): Allow setting a custom I18n backend for contract messages - [@michaelherold](https://github.com/michaelherold).
 
 ### Changed
 

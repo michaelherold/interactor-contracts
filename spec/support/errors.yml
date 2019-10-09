@@ -1,0 +1,4 @@
+en:
+  my_app:
+    errors:
+      key?: 'is foobared'

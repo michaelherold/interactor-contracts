@@ -89,6 +89,16 @@ module Interactor
         expectations.add(&term)
       end
 
+      # Configures the underlying contracts for the validation schemata
+      #
+      # @api private
+      # @private
+      # @return [void]
+      def config(&block)
+        promises.config(&block)
+        expectations.config(&block)
+      end
+
       # The consequences for the Contract
       #
       # @example
