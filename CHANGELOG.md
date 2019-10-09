@@ -33,6 +33,8 @@ All notable changes to this project will be documented in this file. This projec
 ### Miscellaneous
 
 * [#24](https://github.com/michaelherold/interactor-contracts/pull/24): Fixed a typo in the gem specification - [@bittersweet](https://github.com/bittersweet).
+* [#28](https://github.com/michaelherold/interactor-contracts/pull/28): Fixed
+the Travis configuration to stop failing on JRuby builds - [@michaelherold](https://github.com/michaelherold).
 * Your contribution here.
 
 ## [0.2.0] - 2019-05-27
