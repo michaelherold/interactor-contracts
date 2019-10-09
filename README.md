@@ -9,7 +9,7 @@
 [travis]: https://travis-ci.org/michaelherold/interactor-contracts
 
 Interactor::Contracts is an extension to the [interactor] gem that gives you
-the ability to specify the expectations (expected inputs) and assurances
+the ability to specify the expectations (expected inputs) and promises
 (expected outputs) of your interactors.
 
 [interactor]: https://github.com/collectiveidea/interactor
@@ -33,7 +33,7 @@ Or install it yourself as:
 ## Usage
 
 Let's extend the sample `AuthenticateUser` from the Interactor examples with a
-contract that specifies its expectations and assurances.
+contract that specifies its expectations and promises.
 
 ```ruby
 class AuthenticateUser
@@ -45,7 +45,7 @@ class AuthenticateUser
     required(:password).filled
   end
 
-  assures do
+  promises do
     required(:user).filled
     required(:token).filled
   end
@@ -69,19 +69,20 @@ The `expects` block defines the expectations: the expected attributes of the
 context prior to the interactor running, along with any predicates that further
 constrain the input.
 
-The `assures` block defines the assurances: the expected attributes of the
+The `promises` block defines the promises: the expected attributes of the
 context after the interactor runs and successfully completes, along with any
-predicates the further constrain the output.
+predicates the further constrain the output. Note, for backward-compatibility,
+this is also available via the `assures` method.
 
 Because interactors can have transitive dependencies through the use of
 organizers, any other inputs or outputs are ignored from the perspective of
 the contract and are passed along to the outgoing (successful) context.
 
-Both `expects` and `assures` wrap [dry-validation], so you can use any
+Both `expects` and `promises` wrap [dry-validation], so you can use any
 predicates defined in it to describe the expected inputs and outputs of your
 interactor.
 
-To hook into a failed expectation or assurance, you can use the `on_breach`
+To hook into a failed expectation or promise, you can use the `on_breach`
 method to defined a breach handler. It should take a 1-arity block that expects
 an array of `Breach` objects. These objects have a `property` attribute that
 will give you the key that's in breach of its contract. Breaches also have a

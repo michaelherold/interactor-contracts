@@ -6,14 +6,14 @@ module Interactor
   module Contracts
     # Defines the class-level DSL that enables Interactor contracts.
     module DSL
-      # Defines the assurances of an Interactor and creates an after hook
+      # Defines the promises of an Interactor and creates an after hook
       #
       # @example
       #   class CreatePerson
       #     include Interactor
       #     include Interactor::Contracts
       #
-      #     assures do
+      #     promises do
       #       required(:person).filled
       #     end
       #
@@ -23,12 +23,13 @@ module Interactor
       #   end
       #
       # @api public
-      # @param [Block] block the block defining the assurances
+      # @param [Block] block the block defining the promises
       # @return [void]
-      def assures(&block)
-        contract.add_assurance(&block)
-        define_assurances_hook
+      def promises(&block)
+        contract.add_promise(&block)
+        define_promises_hook
       end
+      alias assures promises
 
       # The Contract to enforce on calls to the Interactor
       #
@@ -37,7 +38,7 @@ module Interactor
       #     include Interactor
       #     include Interactor::Contracts
       #
-      #     assures do
+      #     promises do
       #       required(:person).filled
       #     end
       #
@@ -78,18 +79,18 @@ module Interactor
       end
 
       # Sets contract to given one and calls hooks
-      # define_assurances_hook and define_expectations_hook
+      # define_promises_hook and define_expectations_hook
       #
       # @api semipublic
       # @param [Contract] contract
       # @return [void]
       def inherit_contract(contract)
         @contract = Contract.new(
-          assurances: contract.assurances.clone,
+          promises: contract.promises.clone,
           expectations: contract.expectations.clone,
           consequences: contract.consequences.clone
         )
-        define_assurances_hook
+        define_promises_hook
         define_expectations_hook
       end
 
@@ -124,12 +125,12 @@ module Interactor
 
       private
 
-      # Flags whether the assurances hook has been defined
+      # Flags whether the promises hook has been defined
       #
       # @api private
       # @return [TrueClass, FalseClass] true if the hook is defined
-      attr_reader :defined_assurances_hook
-      alias defined_assurances_hook? defined_assurances_hook
+      attr_reader :defined_promises_hook
+      alias defined_promises_hook? defined_promises_hook
 
       # Flags whether the expectations hook has been defined
       #
@@ -143,12 +144,12 @@ module Interactor
       # @api private
       # @raise [Interactor::Failure] if the input fails to meet its contract.
       # @return [void]
-      def define_assurances_hook
-        return if defined_assurances_hook?
+      def define_promises_hook
+        return if defined_promises_hook?
 
-        after { enforce_contracts(contract.assurances) }
+        after { enforce_contracts(contract.promises) }
 
-        @defined_assurances_hook = true
+        @defined_promises_hook = true
       end
 
       # Defines a before hook that validates the Interactor's input

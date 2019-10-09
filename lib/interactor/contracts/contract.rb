@@ -4,7 +4,7 @@ require 'interactor/contracts/terms'
 
 module Interactor
   module Contracts
-    # Contains the assurances, expectations, and consequences of an
+    # Contains the promises, expectations, and consequences of an
     # interactor's contract.
     class Contract
       # Instantiates a new Contract with the given constraints
@@ -13,26 +13,26 @@ module Interactor
       #   Interactor::Contracts::Contract.new
       #
       # @api semipublic
-      # @param [Terms] assurances the Contract's assurances
+      # @param [Terms] promises the Contract's promises
       # @param [Terms] expectations the Contract's expectations
       # @param [Array<#call>] consequences the Contract's consequences
       # rubocop:disable Metrics/LineLength
-      def initialize(assurances: Terms.new, expectations: Terms.new, consequences: [])
-        @assurances = assurances
+      def initialize(promises: Terms.new, expectations: Terms.new, consequences: [])
+        @promises = promises
         @consequences = consequences
         @expectations = expectations
       end
       # rubocop:enable Metrics/LineLength
 
-      # The assurances the Contract will fulfill
+      # The promises the Contract will fulfill
       #
       # @example
       #   contract = Interactor::Contracts::Contract.new
-      #   contract.assurances  #=> <#Interactor::Contracts::Terms>
+      #   contract.promises  #=> <#Interactor::Contracts::Terms>
       #
       # @api semipublic
-      # @return [Terms] the terms for the assurances
-      attr_reader :assurances
+      # @return [Terms] the terms for the promises
+      attr_reader :promises
 
       # The expectations for arguments passed into the Interactor
       #
@@ -44,19 +44,19 @@ module Interactor
       # @return [Terms] the terms for the expectations
       attr_reader :expectations
 
-      # Adds an assurance to the Contract's set of assurances
+      # Adds an promise to the Contract's set of promises
       #
       # @example
       #   contract = Interactor::Contracts::Contract.new
-      #   contract.add_assurance do
+      #   contract.add_promise do
       #     required(:name).filled
       #   end
       #
       # @api semipublic
-      # @param [Block] term the assurance as a block of arity 0
+      # @param [Block] term the promise as a block of arity 0
       # @return [void]
-      def add_assurance(&term)
-        assurances.add(&term)
+      def add_promise(&term)
+        promises.add(&term)
       end
 
       # Adds a consequence to the Contract's set of consequences
