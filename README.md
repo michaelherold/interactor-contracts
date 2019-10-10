@@ -65,9 +65,13 @@ class AuthenticateUser
 end
 ```
 
+### Inputs: expectations
+
 The `expects` block defines the expectations: the expected attributes of the
 context prior to the interactor running, along with any predicates that further
 constrain the input.
+
+### Outputs: promises
 
 The `promises` block defines the promises: the expected attributes of the
 context after the interactor runs and successfully completes, along with any
@@ -81,6 +85,16 @@ the contract and are passed along to the outgoing (successful) context.
 Both `expects` and `promises` wrap [dry-validation], so you can use any
 predicates defined in it to describe the expected inputs and outputs of your
 interactor.
+
+### Contract failures: breaches
+
+By default, contract failures, or breaches, behave like the example above:
+breached keys are set on the failed context with their contract failures as
+values. Note that you do not have to define an `on_breach` for the behavior, but
+if you do this behavior will not occur.
+
+If there are more complicated things you wish to do with contract failures, you
+can define one or more breach handlers.
 
 To hook into a failed expectation or promise, you can use the `on_breach`
 method to defined a breach handler. It should take a 1-arity block that expects
@@ -99,6 +113,15 @@ result = AuthenticateUser.call({})
 #=> #<Interactor::Context email=["email is missing"], password=["password is missing"]>
 
 result.failure?  #=> true
+```
+
+If you would rather have your contract breaches be aggregated into, for example,
+an `errors` property, you could use a breach handler like the following:
+
+```ruby
+on_breach do |breaches|
+  context.fail!(errors: breaches)
+end
 ```
 
 [dry-validation]: https://github.com/dryrb/dry-validation
