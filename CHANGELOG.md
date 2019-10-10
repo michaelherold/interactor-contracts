@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 [semver]: http://semver.org/spec/v2.0.0.html
 
-## [Unreleased][unreleased]
+## [0.3.0] - 2019-10-09
 
 ### Added
 
@@ -15,28 +15,15 @@ All notable changes to this project will be documented in this file. This projec
 
 * [#29](https://github.com/michaelherold/interactor-contracts/pull/29): Renamed the `assures` method to `promises` and all of the internals to reflect the new naming. This is a backward-compatible change due to an alias of `assures` to `promises` - [@michaelherold](https://github.com/michaelherold), suggested by [@KelseyDH](https://github.com/KelseyDH).
 
-### Deprecated
-
-* Your contribution here.
-
-### Removed
-
-* Your contribution here.
-
 ### Fixed
 
 * [#26](https://github.com/michaelherold/interactor-contracts/pull/26): Fix bug with inheritance - [@raykov](https://github.com/raykov).
-
-### Security
-
-* Your contribution here.
 
 ### Miscellaneous
 
 * [#24](https://github.com/michaelherold/interactor-contracts/pull/24): Fixed a typo in the gem specification - [@bittersweet](https://github.com/bittersweet).
 * [#28](https://github.com/michaelherold/interactor-contracts/pull/28): Fixed
 the Travis configuration to stop failing on JRuby builds - [@michaelherold](https://github.com/michaelherold).
-* Your contribution here.
 
 ## [0.2.0] - 2019-05-27
 
@@ -70,5 +57,6 @@ the Travis configuration to stop failing on JRuby builds - [@michaelherold](http
 * [#6](https://github.com/michaelherold/interactor-contracts/pull/6): Updated the README - [@michaelherold](https://github.com/michaelherold).
 
 [unreleased]: https://github.com/michaelherold/interactor-contracts/compare/v0.2.0...master
+[0.3.0]: https://github.com/michaelherold/interactor-contracts/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/michaelherold/interactor-contracts/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/michaelherold/interactor-contracts/tree/v0.1.0
