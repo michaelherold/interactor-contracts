@@ -8,6 +8,7 @@ AllCops:
 
 Metrics/BlockLength:
   Exclude:
+    - interactor-contracts.gemspec
     - spec/**/*.rb
 
 Naming/FileName:
