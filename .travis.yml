@@ -25,3 +25,7 @@ matrix:
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     - rvm: jruby-9.2.8.0
       jdk: openjdk8
+
+branches:
+  only:
+    - master
