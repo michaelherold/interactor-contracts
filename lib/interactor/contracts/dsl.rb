@@ -46,7 +46,7 @@ module Interactor
       #   end
       #
       # @api public
-      # @params [Block] block the block to execute for the underlying contracts
+      # @param [Block] block the block to execute for the underlying contracts
       # @return [void]
       def config(&block)
         contract.config(&block)
@@ -99,10 +99,9 @@ module Interactor
         define_expectations_hook
       end
 
-      # Sets contract to given one and calls hooks
-      # define_promises_hook and define_expectations_hook
+      # Allows for the inheritance of contracts in subclasses
       #
-      # @api semipublic
+      # @api private
       # @param [Contract] contract
       # @return [void]
       def inherit_contract(contract)

@@ -13,6 +13,7 @@ group :development do
   gem 'guard-yard'
   gem 'inch'
   gem 'mutant-rspec'
+  gem 'redcarpet'
   gem 'rubocop', '0.52.1'
   gem 'yard', '~> 0.9'
   gem 'yardstick'

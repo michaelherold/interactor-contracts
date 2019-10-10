@@ -67,8 +67,10 @@ module Interactor
 
       private
 
-      # Defines no-op rules block if no schema has been added
-      # Prevents the raising of Dry::Validation::SchemaMissingError exception
+      # Defines a no-op schema as a base to extend upon
+      #
+      # This prevents the raising of a `Dry::Validation::SchemaMissingError`
+      # exception.
       #
       # @api private
       # @return [void]
