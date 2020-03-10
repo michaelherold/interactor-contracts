@@ -22,7 +22,7 @@ end
 group :development, :test do
   gem 'i18n'
   gem 'pry'
-  gem 'rake', '< 11'
+  gem 'rake', '>= 12.3.3'
 end
 
 group :test do
